@@ -10,6 +10,10 @@ import { PinguinoService } from '../pinguino.service';
 export class PinguinosListComponent implements OnInit {
 
   pinguinos: Array<Pinguino> = [];
+
+  mayor_distribucion: number = 0;
+  pinguino_mayor: string = "";
+  distribucion_mayor:string="";
   
 
   selected: Boolean = false;
@@ -20,13 +24,26 @@ export class PinguinosListComponent implements OnInit {
   getPinguinos(): void {
     this.pinguinoService.getPinguinos().subscribe((pinguinos) => {
       this.pinguinos = pinguinos;
-      //this.calcularPromedioTemporadas();
+      this.Calcular_mayor_distribucion();
     });
   }
 
   onSelected(pinguino: Pinguino): void {
     this.selected = true;
     this.selectedPinguino = pinguino;
+  }
+
+  Calcular_mayor_distribucion(){
+    let mayor_distribucion=0;
+    for (const pinguino of this.pinguinos){
+      if (pinguino.global_distribution.length > mayor_distribucion){
+        mayor_distribucion = pinguino.global_distribution.length;
+        this.pinguino_mayor = pinguino.name;
+        this.distribucion_mayor = pinguino.global_distribution;
+      }
+
+    }
+
   }
 
   
